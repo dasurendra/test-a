@@ -1,16 +1,26 @@
-// Dashboard.js
 import React from "react";
 import { Box, Grid, Paper, Typography, Toolbar } from "@mui/material";
 import { Sidebar } from "./sidebar";
 import { Footer } from "./Footer";
 import { Navbara } from "./Navbara";
+import { ChartPage } from "./ChartPage";
 
 export const Dashboard = () => {
+  const drawerWidth = 240;
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-      <Navbara /> {/* Place Navbar at the top */}
+      <Navbara /> {/* Navbar at the top */}
       <Sidebar />
-      <Box component="main" sx={{ flexGrow: 1, p: 3, paddingBottom: "60px" }}>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          marginLeft: `${drawerWidth}px`, // Adjust for sidebar width
+          p: 3,
+          paddingBottom: "60px",
+        }}
+      >
         <Toolbar />
 
         {/* Grid Layout */}
@@ -35,11 +45,20 @@ export const Dashboard = () => {
             </Paper>
           </Grid>
 
-          {/* Bottom Row with 1 Large Box */}
+          {/* Bottom Row with Chart */}
           <Grid item xs={12}>
-            <Paper elevation={3} sx={{ p: 5, textAlign: "center" }}>
-              <Typography variant="h5">Large Box</Typography>
-              <Typography>Content for the large box goes here.</Typography>
+            <Paper
+              elevation={3}
+              sx={{
+                p: 5,
+                textAlign: "center",
+                overflow: "hidden", // Ensures no overflow for large charts
+              }}
+            >
+              <Typography variant="h5" sx={{ marginBottom: 2 }}>
+                Monthly Request
+              </Typography>
+              <ChartPage />
             </Paper>
           </Grid>
         </Grid>
