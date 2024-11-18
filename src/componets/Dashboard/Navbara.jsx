@@ -53,36 +53,35 @@ export const Navbara = () => {
         {/* Search Bar */}
         <Box
           sx={{
-            position: "relative",
+            display: "flex", // Ensures the search box is shown
+            alignItems: "center",
             borderRadius: 1,
-            backgroundColor: (theme) => alpha(theme.palette.common.white, 0.15),
+            backgroundColor: "#1976d2", // Blue background for better visibility
             "&:hover": {
-              backgroundColor: (theme) =>
-                alpha(theme.palette.common.white, 0.25),
+              backgroundColor: "#1565c0", // Slightly darker on hover
             },
             marginRight: 2,
+            padding: "0 10px", // Padding inside the search box
+            width: "250px", // Width of the search box
           }}
         >
+          <SearchIcon sx={{ color: "#fff" }} />
           <InputBase
             sx={{
-              color: "inherit",
-              paddingLeft: 2,
-              width: "200px",
-              "& .MuiInputBase-input": {
-                color: "#fff", // White text color for the search bar
-              },
+              color: "#fff",
+              marginLeft: 1, // Space between the icon and text
+              width: "100%",
             }}
             placeholder="Search..."
             value={searchTerm}
             onChange={handleSearchChange}
-            startAdornment={<SearchIcon sx={{ color: "#fff" }} />} // White search icon
           />
         </Box>
 
         {/* Notification Icon */}
         <IconButton color="inherit" onClick={handleNotificationClick}>
           <Badge badgeContent={4} color="error">
-            <NotificationsIcon sx={{ color: "#fff" }} />{" "}
+            <NotificationsIcon sx={{ color: "#1976d2" }} />{" "}
             {/* White notification icon */}
           </Badge>
         </IconButton>
