@@ -42,12 +42,6 @@ export const Sidebar = () => {
           </ListItemIcon>
           <ListItemText primary="Dashboard" />
         </ListItem>
-        <ListItem button>
-          <ListItemIcon>
-            <SettingsIcon />
-          </ListItemIcon>
-          <ListItemText primary="Settings" />
-        </ListItem>
       </List>
 
       {/* Footer Section */}
@@ -61,17 +55,23 @@ export const Sidebar = () => {
         }}
       >
         <List>
-          <ListItem button>
-            <ListItemIcon>
-              <AccountCircleIcon />
-            </ListItemIcon>
-            <ListItemText primary="Username" />
-          </ListItem>
-          <ListItem button>
+          <ListItem>
             <ListItemIcon>
               <AdminPanelSettingsIcon />
             </ListItemIcon>
             <ListItemText primary="Management" />
+          </ListItem>
+          <ListItem>
+            <ListItemIcon>
+              <SettingsIcon />
+            </ListItemIcon>
+            <ListItemText primary="Settings" />
+          </ListItem>
+          <ListItem>
+            <ListItemIcon>
+              <AccountCircleIcon />
+            </ListItemIcon>
+            <ListItemText primary="Username" />
           </ListItem>
         </List>
       </Box>
