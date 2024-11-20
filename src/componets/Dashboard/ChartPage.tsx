@@ -1,70 +1,71 @@
 import React from "react";
-import { Bar } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
+import { Pie } from "react-chartjs-2";
+import { Chart as ChartJS, Tooltip, Legend, ArcElement } from "chart.js";
+import { Boxes } from "../Layout/Boxes";
+import { Typography } from "@mui/material";
 
-// Register Chart.js components
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+// Register Chart.js components needed for the pie chart
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 export const ChartPage = () => {
-  const barChartData = {
-    labels: ["Jan", "Feb", "Mar", "Apr", "Jun", "Jul"],
+  const pieChartData = {
+    labels: ["AWS", "Azure", "Google Cloud", "Other"],
     datasets: [
       {
-        label: "Bar Dataset",
-        data: [12, 19, 3, 5, 2, 123],
+        data: [40, 30, 20, 10],
         backgroundColor: [
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(255, 206, 86, 0.2)",
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(153, 102, 255, 0.2)",
-          "rgba(255, 159, 64, 0.2)",
+          "#FF6384", // Pink
+          "#36A2EB", // Blue
+          "#FFCE56", // Yellow
+          "#4BC0C0", // Turquoise
         ],
-        borderColor: [
-          "rgba(255, 99, 132, 1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(75, 192, 192, 1)",
-          "rgba(153, 102, 255, 1)",
-          "rgba(255, 159, 64, 1)",
-        ],
-        borderWidth: 1,
+        borderColor: "#fff", // Optional: set border color
+        borderWidth: 1, // Optional: set border width
       },
     ],
   };
 
   return (
-    <div
-      style={{
-        width: "100%",
-        height: "100%", // Dynamically fit the container
-        maxHeight: "400px", // Optional: Set max height for aesthetics
-        overflow: "hidden", // Prevent overflow
-      }}
-    >
-      <Bar
-        data={barChartData}
-        options={{
-          responsive: true,
-          maintainAspectRatio: false, // Allow dynamic resizing
-          plugins: { legend: { position: "top" } },
+    <Boxes>
+      {/* Heading for Cost and Usage */}
+      <div style={{ marginBottom: "16px" }}>
+        <Typography variant="h5" gutterBottom>
+          Cost Distribution
+        </Typography>
+      </div>
+
+      {/* Chart Container */}
+      <div
+        style={{
+          width: "100%",
+          height: "100%", // Dynamically fit the container
+          maxHeight: "400px", // Optional: Set max height for aesthetics
+          overflow: "hidden", // Prevent overflow
         }}
-      />
-    </div>
+      >
+        <Pie
+          data={pieChartData}
+          options={{
+            responsive: true,
+            maintainAspectRatio: false, // Allow dynamic resizing
+            plugins: {
+              legend: {
+                position: "top",
+                labels: {
+                  boxWidth: 20, // Optional: Set the width of legend boxes
+                },
+              },
+              tooltip: {
+                callbacks: {
+                  label: (context) => {
+                    return `${context.label}: ${context.raw}%`;
+                  },
+                },
+              },
+            },
+          }}
+        />
+      </div>
+    </Boxes>
   );
 };

@@ -1,4 +1,3 @@
-// Navbar.js
 import React, { useState } from "react";
 import {
   AppBar,
@@ -14,9 +13,7 @@ import {
 import {
   Search as SearchIcon,
   Notifications as NotificationsIcon,
-  AccountCircle,
 } from "@mui/icons-material";
-import { alpha } from "@mui/system";
 
 export const Navbara = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -40,15 +37,18 @@ export const Navbara = () => {
       position="fixed"
       sx={{
         zIndex: (theme) => theme.zIndex.drawer + 1,
-        backgroundColor: "#fff", // Dark background color (you can choose any color)
-        boxShadow: "none", // Remove shadow for a flatter look
+        backgroundColor: "#f5f5f5", // Light gray background
+        boxShadow: "none", // Remove shadow for a flatter, cleaner look
+        color: "#000", // Text color as black for better visibility
       }}
     >
       <Toolbar>
         <Typography
           variant="h6"
-          sx={{ flexGrow: 1, color: "#fff" }}
-        ></Typography>
+          sx={{ flexGrow: 1, textAlign: "center", color: "#000" }} // Dark text color for the title
+        >
+          {" "}
+        </Typography>
 
         {/* Search Bar */}
         <Box
@@ -56,19 +56,19 @@ export const Navbara = () => {
             display: "flex", // Ensures the search box is shown
             alignItems: "center",
             borderRadius: 1,
-            backgroundColor: "#1976d2", // Blue background for better visibility
+            backgroundColor: "#e0e0e0", // Light gray background for the search box
             "&:hover": {
-              backgroundColor: "#1565c0", // Slightly darker on hover
+              backgroundColor: "#d5d5d5", // Darker gray on hover for search box
             },
             marginRight: 2,
             padding: "0 10px", // Padding inside the search box
             width: "250px", // Width of the search box
           }}
         >
-          <SearchIcon sx={{ color: "#fff" }} />
+          <SearchIcon sx={{ color: "#000" }} /> {/* Dark search icon */}
           <InputBase
             sx={{
-              color: "#fff",
+              color: "#000", // Dark text color for the input field
               marginLeft: 1, // Space between the icon and text
               width: "100%",
             }}
@@ -82,7 +82,7 @@ export const Navbara = () => {
         <IconButton color="inherit" onClick={handleNotificationClick}>
           <Badge badgeContent={4} color="error">
             <NotificationsIcon sx={{ color: "#1976d2" }} />{" "}
-            {/* White notification icon */}
+            {/* Blue notification icon */}
           </Badge>
         </IconButton>
       </Toolbar>
