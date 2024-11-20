@@ -12,6 +12,7 @@ function App() {
       <Routes>
         {" "}
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/" element={<Dashboard />} />
         <Route path="/rule" element={<WAFRuleForm />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
