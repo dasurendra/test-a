@@ -1,0 +1,262 @@
+<html>
+ <head>
+   <style>  
+     .highlight {
+       background-color: black;color: white; 
+     }
+     .screen {
+       display: block
+       font-size: 12px;
+       font-family: Tahoma, sans-serif;
+       padding: 5px;
+       border-radius: 5px 5px 5px;
+       border: 3px solid black;
+       padding-left: 25px;
+       position:relative; 
+       margin:auto;
+       
+       width:800;
+       height:600;
+       #left:200;
+       top:100;
+     }
+   </style>
+   <script>
+     function DateFmt(fstr) {
+       this.formatString = fstr
+
+       var mthNames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+       var dayNames = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+       var zeroPad = function(number) {
+         return ("0"+number).substr(-2,2);
+       }
+
+       var dateMarkers = {
+         d:['getDate',function(v) { return zeroPad(v)}],
+         m:['getMonth',function(v) { return zeroPad(v+1)}],
+         n:['getMonth',function(v) { return mthNames[v]; }],
+         w:['getDay',function(v) { return dayNames[v]; }],
+         y:['getFullYear'],
+         H:['getHours',function(v) { return zeroPad(v)}],
+         M:['getMinutes',function(v) { return zeroPad(v)}],
+         S:['getSeconds',function(v) { return zeroPad(v)}],
+         i:['toISOString']
+       };
+
+       this.format = function(date) {
+         var dateTxt = this.formatString.replace(/%(.)/g, function(m, p) {
+           //console.log("P="+p)
+           var rv = date[(dateMarkers[p])[0]]()
+
+           if ( dateMarkers[p][1] != null ) rv = dateMarkers[p][1](rv)
+
+           return rv
+
+          });
+
+          return dateTxt
+       }
+
+     }
+     function update_screen(content) {
+      console.log("update_screen : "+content)
+       document.getElementById("screen").innerHTML = 
+         "[Menu] [Home]<br/><br/>"+content
+     }
+     // --------------------------------------------------
+     function draw_menu(id) {
+       console.log("draw_menu "+id)
+       ihtml = cdisplay.iterate(function(i, selection, label) {
+          if ( i == selection ) 
+            return "<span class='highlight'>"+(i+1)+". "+label+"</span><br/>"
+          else
+            return (i+1)+". "+label+"<br/>";
+       })
+       console.log("draw_menu >>"+ihtml)
+       return ihtml
+     }
+     // --------------------------------------------------
+     function AppObjectManager() {
+        this.items = []
+
+        this.addObject = function(id,type, obj) {
+          this.items.push({id:id, type:type, object:obj })
+        }
+        this.setCurrent = function(id) {
+          r = null 
+          for ( i = 0;i< this.items.length;i++) {
+            if ( this.items[i].id == id ) {
+              r = this.items[i].object
+              break
+            }
+          }
+          cdisplay = r
+          update_screen(cdisplay.display())
+           if ( cdisplay.post_render_func ) cdisplay.post_render_func() // Fix this
+           if ( cdisplay.type == "Menu") this.screenUpdateFunction() // Fix this special case
+          
+        }
+        this.screenUpdate = function(f) {
+          this.screenUpdateFunction = f
+        } 
+     }
+
+     // --------------------------------------------------
+     function Menu(render_func, items) {
+       this.type = "Menu"
+       this.items = items
+       this.selection = 0
+       this.render_func = render_func
+
+       // --------------------------------------------------
+       this.display = function() {
+         return this.render_func() 
+       }
+       this.select = function() {
+         console.log("Select running")
+         this.items[this.selection].on_select()
+       }
+       this.down = function() {
+         if (++this.selection >= this.items.length ) this.selection = 0
+       }
+       this.up = function() {
+         if (--this.selection < 0 ) this.selection = this.items.length-1
+       }
+       this.iterate = function(rf) {
+         r=""
+         for ( i = 0 ; i < items.length;i++ ) { r+=rf(i, this.selection, items[i].label) }
+
+         return r
+       } 
+       this.handle_key = function(e) {
+         console.log(">>>handle_key ("+e.code+")")
+         if ( e.code == "ArrowDown" ) { this.down() }
+         if ( e.code == "ArrowUp" ) { this.up() }
+         if ( e.code == "KeyH") { objmgr.setCurrent("MENU001") }
+         if ( e.code == "Enter" ) {
+            console.log("Menu item "+this.selection+" selected");
+            this.select()
+         }
+         console.log("KeyHandler completed")
+
+       }
+     }
+     // Do we need a MenuManager? 
+     // --------------------------------------------------
+     function Screen(render_func, post_render_func) {
+       this.type = "Screen"
+       this.render_func= render_func
+       this.post_render_func = post_render_func
+ 
+       // --------------------------------------------------
+       this.display = function() {
+         return this.render_func() 
+       }
+       this.select = function() {
+       }
+       this.handle_key = function(e) {
+         console.log(">>>handle_key ("+e.code+")")
+         if ( e.code == "KeyH") { objmgr.setCurrent("MENU001") }
+         console.log("KeyHandler completed")
+
+       }
+
+     }
+     // --------------------------------------------------
+     screen1 = new Screen(function() {
+         content = ""
+         content = `
+           <form>
+             <table>
+               <tr><td>Start DateTime :</td><td><input id="t1" type="text" name="a"/></td></tr>
+               <tr><td>End DataTime :</td><td><input   id="t2" type="text" name="b"/></td></tr>
+             </table>
+             <button type="Button" id="submit" name="submit" text="submit" onclick="button()">Submit</button>
+           </form>
+         `
+
+         return content 
+       }, function() { // post render to screen this runs
+          document.getElementById("t1").value = new DateFmt("%H:%M %d/%n/%y").format(new Date())
+           d = new Date();d.setHours(d.getHours()+1)
+           document.getElementById("t2").value = new DateFmt("%H:%M %d/%n/%y").format(d)
+       }
+     )
+     function button() {
+       t1 = document.getElementById("t1").value
+       t2 = document.getElementById("t2").value
+       console.log("data submitted t1="+t1)
+       service_request("forms/outage/set?start="+t2+"&end="+t2)
+
+     }
+     menu = new Menu(function() { draw_menu("screen") },[
+       {label:"Block IP",      on_select:function() { 
+          console.log("Block IP")
+          objmgr.setCurrent("MENU002")
+
+       } },
+       {label:"Set Outage",    on_select:function() { 
+         console.log("Set Outage")
+         objmgr.setCurrent("SCRE001")
+
+       } },
+       {label:"Report Status", on_select:function() { console.log("Report Status")} },
+     ])
+     menu2 = new Menu(function() { draw_menu("screen") },[
+       {label:"Block a single IP",        on_select:function() { console.log("Block a single IP") } },
+       {label:"Block multiple IP ranges", on_select:function() { console.log("Block multiple IP ranges") } },
+       {label:"Temporary Block IPs",      on_select:function() { console.log("Temporarily block IPS")} },
+       {label:"[Go Back]",                on_select:function() { objmgr.setCurrent("MENU001")}  },
+     ])
+     objmgr = new AppObjectManager()
+     objmgr.screenUpdate(function() { update_screen(draw_menu("screen")) } )
+     objmgr.addObject("MENU001","Menu",menu)  
+     objmgr.addObject("MENU002","Menu",menu2)  
+     objmgr.addObject("SCRE001","Screen",screen1)  
+     // --------------------------------------------------
+     cdisplay = menu
+
+     // --------------------------------------------------
+     function service_request(path) {
+       const request = new Request("http://localhost:8080/"+path);
+       fetch(request)
+         .then((response) => response.blob())
+           .then((resp_body) => resp_body.text())
+             .then((txt) => console.log(txt))
+        
+     }
+
+
+     // --------------------------------------------------
+     addEventListener("keydown", (e) => {
+
+       console.log(`Key "${e.key}" pressed [event: keydown]`);
+       console.log("TYPE:"+cdisplay.type)
+       if ( cdisplay.type == "Screen" ) {
+         cdisplay.handle_key(e) 
+       }
+       if ( cdisplay.type == "Menu" ) {
+
+         cdisplay.handle_key(e) 
+         console.log("cdisplay:"+cdisplay)
+         if ( cdisplay.type == "Menu" )
+           update_screen(draw_menu("screen"))
+         console.log("Keydown completed")
+       }
+     });
+
+     // --------------------------------------------------
+     function init() {
+       objmgr.setCurrent("MENU001")
+       service_request("abc")
+     // --------------------------------------------------
+     }
+   </script>
+
+ </head>
+ <body onload="init()"">
+    <div id='screen' class='screen'>
+    </div>
+
+  </body>
+</html>
