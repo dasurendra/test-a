@@ -5,6 +5,8 @@ import SignUp from "./componets/Registration";
 import { Dashboard } from "./componets/Dashboard/Dashboard";
 import WAFRuleForm from "./componets/rule/WafRuleBuilder";
 import Redirection from "./componets/rule/Redirection";
+import { RdsTable } from "./componets/Layout/rds";
+import { DbManagement } from "./componets/Dashboard/DbManagement";
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/redirection" element={<Redirection />} />
+        <Route path="/database" element={<RdsTable />} />
+        <Route path="/dbmanagement" element={<DbManagement />} />
       </Routes>
     </Router>
   );

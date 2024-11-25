@@ -88,6 +88,13 @@ export const Sidebar = () => {
           </ListItemIcon>
           <ListItemText primary="Metrics" />
         </ListItem>
+        {/* Alert */}
+        <ListItem>
+          <ListItemIcon>
+            <AnalyticsIcon />
+          </ListItemIcon>
+          <ListItemText primary="Alert" />
+        </ListItem>
       </List>
 
       {/* Footer Section */}

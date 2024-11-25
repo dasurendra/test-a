@@ -12,7 +12,7 @@ import { ChartPage } from "./ChartPage";
 import { Storage } from "../services/Storage";
 
 export const Dashboard = () => {
-  const drawerWidth = 280;
+  const drawerWidth = 240;
 
   return (
     <Box
@@ -20,14 +20,13 @@ export const Dashboard = () => {
         marginTop: 15,
         display: "flex",
         flexDirection: "column",
-        minHeight: "100vh", // Full screen height
-        overflow: "hidden", // Prevent scroll on the root element
+        height: "100vh", // Fix full-screen height
+        overflow: "hidden", // Prevent root scrolling
       }}
     >
-      <Box sx={{ overflow: "hidden" }}>
-        <Navbara />
-        <Sidebar />
-      </Box>
+      <Navbara />
+      <Sidebar />
+
       <Box
         component="main"
         sx={{
