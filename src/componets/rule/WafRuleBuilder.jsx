@@ -8,10 +8,13 @@ import {
   InputLabel,
   Button,
   Typography,
-  FormGroup,
+  Grid,
   FormControlLabel,
   Checkbox,
+  Paper,
 } from "@mui/material";
+import { Navbara } from "../Dashboard/Navbara";
+import { Sidebar } from "../Dashboard/sidebar";
 
 const WAFRuleForm = () => {
   const [formData, setFormData] = useState({
@@ -48,212 +51,255 @@ const WAFRuleForm = () => {
   };
 
   return (
-    <Box
-      component="form"
-      onSubmit={handleSubmit}
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 2,
-        width: 600,
-        margin: "auto",
-        mt: 4,
-        padding: 2,
-        border: "1px solid #ccc",
-        borderRadius: "8px",
-      }}
-    >
-      <Typography variant="h5" align="center">
-        Create Rate Limit Rule
-      </Typography>
-
-      {/* Rule Name */}
-      <TextField
-        label="Rule Name"
-        name="ruleName"
-        value={formData.ruleName}
-        onChange={handleChange}
-        fullWidth
-        required
-      />
-
-      {/* Description */}
-      <TextField
-        label="Description"
-        name="description"
-        value={formData.description}
-        onChange={handleChange}
-        fullWidth
-        required
-      />
-
-      {/* Match Conditions - IP Address */}
-      <TextField
-        label="IP Address or Range"
-        name="ipAddress"
-        value={formData.ipAddress}
-        onChange={handleChange}
-        fullWidth
-      />
-
-      {/* Match Conditions - Geolocation */}
-      <FormControl fullWidth>
-        <InputLabel>Geolocation</InputLabel>
-        <Select
-          name="geolocation"
-          value={formData.geolocation}
-          onChange={handleChange}
+    <>
+      <Navbara />
+      <Sidebar />
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+          backgroundColor: "#f4f7fb", // Light background to match the CloudFront style
+        }}
+      >
+        <Paper
+          component="form"
+          onSubmit={handleSubmit}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 3,
+            width: "800px",
+            padding: 3,
+            backgroundColor: "#fff",
+            borderRadius: "8px",
+            boxShadow: 3,
+          }}
         >
-          <MenuItem value="US">United States</MenuItem>
-          <MenuItem value="AU">Australia</MenuItem>
-          <MenuItem value="IN">India</MenuItem>
-          <MenuItem value="Other">Other</MenuItem>
-        </Select>
-      </FormControl>
+          <Typography variant="h5" align="center" sx={{ color: "#333" }}>
+            Create Rate Limit Rule
+          </Typography>
 
-      {/* Match Conditions - URI Path */}
-      <TextField
-        label="URI Path"
-        name="uri"
-        value={formData.uri}
-        onChange={handleChange}
-        fullWidth
-        required
-      />
+          {/* Row 1: Rule Name and Description */}
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Rule Name"
+                name="ruleName"
+                value={formData.ruleName}
+                onChange={handleChange}
+                fullWidth
+                required
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Description"
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                fullWidth
+                required
+              />
+            </Grid>
+          </Grid>
 
-      {/* Rate Limiting */}
-      <TextField
-        label="Rate Limit (e.g., 6/5/15)"
-        name="rateLimit"
-        value={formData.rateLimit}
-        onChange={handleChange}
-        fullWidth
-        required
-      />
+          {/* Row 2: IP Address and Geolocation */}
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="IP Address or Range"
+                name="ipAddress"
+                value={formData.ipAddress}
+                onChange={handleChange}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth>
+                <InputLabel>Geolocation</InputLabel>
+                <Select
+                  name="geolocation"
+                  value={formData.geolocation}
+                  onChange={handleChange}
+                >
+                  <MenuItem value="US">United States</MenuItem>
+                  <MenuItem value="AU">Australia</MenuItem>
+                  <MenuItem value="IN">India</MenuItem>
+                  <MenuItem value="Other">Other</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
 
-      {/* Time Frame for Rate Limit */}
-      <TextField
-        label="Time Frame (seconds)"
-        name="timeFrame"
-        value={formData.timeFrame}
-        onChange={handleChange}
-        fullWidth
-        required
-      />
+          {/* Row 3: URI and Rate Limit */}
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="URI Path"
+                name="uri"
+                value={formData.uri}
+                onChange={handleChange}
+                fullWidth
+                required
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Rate Limit (e.g., 6/5/15)"
+                name="rateLimit"
+                value={formData.rateLimit}
+                onChange={handleChange}
+                fullWidth
+                required
+              />
+            </Grid>
+          </Grid>
 
-      {/* Response Action */}
-      <FormControl fullWidth>
-        <InputLabel>Response Action</InputLabel>
-        <Select
-          name="responseAction"
-          value={formData.responseAction}
-          onChange={handleChange}
-          required
-        >
-          <MenuItem value="Allow">Allow</MenuItem>
-          <MenuItem value="Block">Block</MenuItem>
-          <MenuItem value="Count">Count</MenuItem>
-        </Select>
-      </FormControl>
+          {/* Row 4: Time Frame and Response Action */}
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Time Frame (seconds)"
+                name="timeFrame"
+                value={formData.timeFrame}
+                onChange={handleChange}
+                fullWidth
+                required
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth>
+                <InputLabel>Response Action</InputLabel>
+                <Select
+                  name="responseAction"
+                  value={formData.responseAction}
+                  onChange={handleChange}
+                  required
+                >
+                  <MenuItem value="Allow">Allow</MenuItem>
+                  <MenuItem value="Block">Block</MenuItem>
+                  <MenuItem value="Count">Count</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
 
-      {/* Custom Message Type */}
-      <FormControl fullWidth>
-        <InputLabel>Message Type</InputLabel>
-        <Select
-          name="messageType"
-          value={formData.messageType}
-          onChange={handleChange}
-        >
-          <MenuItem value="Plain Text">Plain Text</MenuItem>
-          <MenuItem value="HTML">HTML</MenuItem>
-          <MenuItem value="JSON">JSON</MenuItem>
-        </Select>
-      </FormControl>
+          {/* Row 5: Message Type and Custom Message */}
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth>
+                <InputLabel>Message Type</InputLabel>
+                <Select
+                  name="messageType"
+                  value={formData.messageType}
+                  onChange={handleChange}
+                >
+                  <MenuItem value="Plain Text">Plain Text</MenuItem>
+                  <MenuItem value="HTML">HTML</MenuItem>
+                  <MenuItem value="JSON">JSON</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              {formData.messageType && (
+                <TextField
+                  label={`Custom Message (${formData.messageType})`}
+                  name="customMessage"
+                  value={formData.customMessage}
+                  onChange={handleChange}
+                  fullWidth
+                  multiline
+                  rows={4}
+                  placeholder={`Enter your ${formData.messageType.toLowerCase()} message`}
+                />
+              )}
+            </Grid>
+          </Grid>
 
-      {/* Custom Message Box */}
-      {formData.messageType && (
-        <TextField
-          label={`Custom Message (${formData.messageType})`}
-          name="customMessage"
-          value={formData.customMessage}
-          onChange={handleChange}
-          fullWidth
-          multiline
-          rows={4}
-          placeholder={`Enter your ${formData.messageType.toLowerCase()} message`}
-        />
-      )}
+          {/* Row 6: Priority and Environment */}
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Priority (1-10)"
+                name="priority"
+                value={formData.priority}
+                onChange={handleChange}
+                fullWidth
+                required
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth>
+                <InputLabel>Environment</InputLabel>
+                <Select
+                  name="environment"
+                  value={formData.environment}
+                  onChange={handleChange}
+                  required
+                >
+                  <MenuItem value="Production">Production</MenuItem>
+                  <MenuItem value="Staging">Staging</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
 
-      {/* Rule Priority */}
-      <TextField
-        label="Priority (1-10)"
-        name="priority"
-        value={formData.priority}
-        onChange={handleChange}
-        fullWidth
-        required
-      />
+          {/* Row 7: Logging Options */}
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={formData.logToService}
+                    onChange={handleChange}
+                    name="logToService"
+                  />
+                }
+                label="Log to External Service"
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth>
+                <InputLabel>Log Level</InputLabel>
+                <Select
+                  name="logLevel"
+                  value={formData.logLevel}
+                  onChange={handleChange}
+                  disabled={!formData.logToService}
+                >
+                  <MenuItem value="INFO">INFO</MenuItem>
+                  <MenuItem value="DEBUG">DEBUG</MenuItem>
+                  <MenuItem value="ERROR">ERROR</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
 
-      {/* Environment */}
-      <FormControl fullWidth>
-        <InputLabel>Environment</InputLabel>
-        <Select
-          name="environment"
-          value={formData.environment}
-          onChange={handleChange}
-          required
-        >
-          <MenuItem value="Production">Production</MenuItem>
-          <MenuItem value="Staging">Staging</MenuItem>
-        </Select>
-      </FormControl>
+          {/* Row 8: Advanced Options */}
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={formData.regexMatch}
+                    onChange={handleChange}
+                    name="regexMatch"
+                  />
+                }
+                label="Enable Regex Matching"
+              />
+            </Grid>
+          </Grid>
 
-      {/* Logging Options */}
-      <FormGroup>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={formData.logToService}
-              onChange={handleChange}
-              name="logToService"
-            />
-          }
-          label="Log to External Service"
-        />
-        <FormControl fullWidth>
-          <InputLabel>Log Level</InputLabel>
-          <Select
-            name="logLevel"
-            value={formData.logLevel}
-            onChange={handleChange}
-            disabled={!formData.logToService}
-          >
-            <MenuItem value="INFO">INFO</MenuItem>
-            <MenuItem value="DEBUG">DEBUG</MenuItem>
-            <MenuItem value="ERROR">ERROR</MenuItem>
-          </Select>
-        </FormControl>
-      </FormGroup>
-
-      {/* Advanced Options */}
-      <FormGroup>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={formData.regexMatch}
-              onChange={handleChange}
-              name="regexMatch"
-            />
-          }
-          label="Enable Regex Matching"
-        />
-      </FormGroup>
-
-      {/* Submit Button */}
-      <Button type="submit" variant="contained" color="primary" fullWidth>
-        Submit Rule
-      </Button>
-    </Box>
+          {/* Submit Button */}
+          <Button type="submit" variant="contained" color="primary" fullWidth>
+            Submit Rule
+          </Button>
+        </Paper>
+      </Box>
+    </>
   );
 };
 
